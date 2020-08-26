@@ -1,0 +1,29 @@
+.file__info {
+    height: 100%;
+    background-color: #eaeaea;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+        .file__name {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 26px;
+        }
+
+        .file__symbols-value {
+            font-size: 15px;
+            line-height: 17px;
+        }
+
+        .remove__file {
+            font-size: 13px;
+            border: none;
+            background: none;
+            border-bottom: 1px dashed #999;
+            color: #999;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+}

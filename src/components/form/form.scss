@@ -1,0 +1,127 @@
+@mixin fontParams($fontSize, $lineHeight, $fontWight) {
+    font-size: $fontSize;
+    line-height: $lineHeight;
+    font-weight: $fontWight;
+}
+
+.form {
+    padding-top: 55px;
+}
+
+.form h3 {
+    @include fontParams(16px, 110%, 700);
+    margin-bottom: 20px;
+}
+
+.form__desk {
+    @include fontParams(15px, 26px, normal);
+    color: #212529;
+}
+
+.input__row {
+    margin-bottom: 10px;
+    height: 35px;
+    position: relative;
+}
+
+.input__row input, .input__row textarea {
+    height: 100%;
+    width: 100%;
+    padding: 5px 10px;
+    border: 1px solid #eaeaea;
+    @include fontParams(16px, 18px, normal);
+    color: #212529;
+    border-radius: 2px;
+}
+
+.input__row input::placeholder, .input__row textarea::placeholder {
+    @include fontParams(16px, 18px, normal);
+    color: #A9A9A9;
+}
+
+.area__row {
+    min-height: 250px;
+    position: relative;
+}
+
+.input__row textarea {
+    resize: none;
+    padding: 10px;
+}
+
+.symbols__value {
+    display: inline-block;
+    color: #999;
+    @include fontParams(12px, 14px, 700);
+}
+
+.file__loader {
+    position: absolute;
+    top: 7px;
+    left: 155px;
+    color: #4a90e2;
+    cursor: pointer;
+}
+
+#file {
+    display: none;
+}
+
+.lang__row {
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.radioBtn__item {
+    margin-bottom: 15px;
+}
+
+.radioBtn__item label {
+    margin-left: 5px;
+    @include fontParams(14px, 16px, normal);
+}
+
+.radioBtn__item input {
+    width: 13px;
+    height: 13px;
+    border: 1px solid #4a90e2;
+}
+
+.form__right {
+    border-top: 1px solid #eaeaea;
+    margin-top: 40px;
+    text-align: center;
+    position: sticky;
+    top: 10px;
+}
+
+.price {
+    color: #333;
+    @include fontParams(22px, 26px, 700);
+    padding: 30px 15px 10px;
+}
+
+.time {
+    color: #999;
+    min-height: 17px;
+    @include fontParams(15px, 17px, 500);
+    padding-bottom: 10px;
+}
+
+.order__btn {
+    width: 100%;
+    height: 35px;
+    @include fontParams(100%, 100%, 700);
+    background-color: #4a90e2;
+    text-decoration: none;
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+    color: #fff;
+    transition: .2s linear;
+    outline: none;
+
+    &:not(:disabled):hover {
+        box-shadow: 0 2px 6px 0 rgba(74,144,226,.5);
+    }
+}
