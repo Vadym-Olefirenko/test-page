@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-expressions */
 import React,{useState, useEffect} from 'react';
 import {Row, Col} from 'reactstrap';
+import moment from 'moment';
 import './form.scss'
 
 import TextArea from '../textArea/textarea';
@@ -19,7 +21,7 @@ export default function Form (){
       const [symbolsValue, setSymbolsValue] = useState();
       const [price, setPrice] = useState('0.00');
       const [time, setTime] = useState('');
-
+      const [endDate, setEndDate] = useState('1');
 
     const textAreaValue = (e) => {
         setText(e.target.value);
@@ -41,7 +43,6 @@ export default function Form (){
         const reader = new FileReader();
 
        reader.onload = function(event) {
-            console.log(event.target.result)
 
             const res = event.target.result.length;
             setFileLoaded(true);
@@ -97,7 +98,7 @@ export default function Form (){
     useEffect(() => {
         const timeCounter = (time) => {
 
-            let workTime = 0;
+            let timeToDo = 0;
             switch (true) {
                 case (symbolsValue === 0):
                     time = '';
@@ -105,16 +106,16 @@ export default function Form (){
                 case (language.includes('0')):
                     time = '';
                     break;
-                case (symbolsValue > 1000 && language.includes('en')):
-                    workTime = (symbolsValue / 333) + 0.30;
+                case (symbolsValue >= 333 && language.includes('en')):
+                    timeToDo = (symbolsValue / 333) + 0.50;
 
-                    time = workTime;
+                    time = timeToDo;
                     break;
-                case (symbolsValue > 1000 && !language.includes('en')):
-                        workTime = (symbolsValue / 1333) + 0.30;
-                        time = workTime;
+                case (symbolsValue >= 1000 && !language.includes('en')):
+                        timeToDo = (symbolsValue / 1333) + 0.50;
+                        time = timeToDo;
                         break;
-                case (symbolsValue < 1000 && language.includes('en')):
+                case (symbolsValue < 333 && language.includes('en')):
                     time = 1;
                     break;
                 case (symbolsValue < 1000 && !language.includes('en')):
@@ -129,11 +130,49 @@ export default function Form (){
             if (fileLoaded && !(fileInfo.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileInfo.type === 'application/msword' || fileInfo.type === 'application/rtf')) {
                 time = time * 1.20;
             }
-
             return Math.ceil(time);
-      }
+        }
+
+        const countdownTime = () => {
+            moment.locale();      
+
+                let a = moment();
+                let b = moment([10,0,0], "HH:mm:ss");
+                let d = moment([19,0,0], "HH:mm:ss");
+
+                let hours = timeCounter();
+
+                const checkDay = (dayNum, hoursAdd, dayAdd) => {
+                    if (b.isoWeekday() === dayNum) {
+                        a = a.add(hoursAdd,'hours');
+                        b.add(dayAdd, 'days');
+                        d.add(dayAdd, 'days');
+                    }
+                }
+
+                for (let i = 0; i < hours; i++) {
+                    a.add(1,'hours'); 
+                    if (!a.isBetween(b, d)) {
+                        a.add(15,'hours');
+                        b.add(1, 'days');
+                        d.add(1, 'days');
+                        continue;
+                    } 
+
+                    checkDay(6, 48, 2);
+                    checkDay(7, 24, 1);
+                }
+                
+                return a.format('DD.MM.YYYY об HH:mm');
+            
+        }
+    
         setTime(timeCounter);
-    }, [language, symbolsValue]);
+        setEndDate(countdownTime);
+
+
+    }, [fileInfo.type, fileLoaded, language, symbolsValue]);
+
 
       const handleSubmit = (e) => {
         e.preventDefault();
@@ -158,7 +197,7 @@ export default function Form (){
                             Виправимо всі помилки, приберемо всі дурниці, перефразуємо невдалі місця, але сильно текст<br/> не переписуватимемо. Зайвих виправлень не буде. Детальніше про редагування
                             </p>
 
-                            <div className="input__row">
+                            <div className="input__row required">
                                 <input 
                                     type="text"
                                     name="email" 
@@ -238,8 +277,8 @@ export default function Form (){
                     <Col lg="3">
                         <div className="form__right">
                             <div className="price__content">
-                            <div className="price">{price === '0.00' ? price : `${price} грн`}</div>
-                            <div className="time">{time === 0 ? null : `Термін виконання: ${time} год.`}</div>
+                            <div className="price">{price === '0.00' ? price + ' грн' : `${price} грн`}</div>
+                            <div className="time">{language === '0' || symbolsValue === 0 ? null : `Термін виконання: ${endDate}`}</div>
 
                                 <button type="submit" className="order__btn">Замовити</button>
                             </div>

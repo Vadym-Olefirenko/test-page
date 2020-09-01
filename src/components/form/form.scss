@@ -79,12 +79,24 @@
 .radioBtn__item label {
     margin-left: 5px;
     @include fontParams(14px, 16px, normal);
+    cursor: pointer;
 }
 
 .radioBtn__item input {
     width: 13px;
     height: 13px;
     border: 1px solid #4a90e2;
+    cursor: pointer;
+}
+
+.input__row.required::before {
+    content: "*";
+    position: absolute;
+    color: red;
+    top: -15px;
+    left: -12px;
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .form__right {
