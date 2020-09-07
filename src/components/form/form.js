@@ -20,7 +20,6 @@ export default function Form (){
       const [file, setFile] = useState();
       const [symbolsValue, setSymbolsValue] = useState();
       const [price, setPrice] = useState('0.00');
-      const [time, setTime] = useState('');
       const [endDate, setEndDate] = useState('1');
 
     const textAreaValue = (e) => {
@@ -167,7 +166,6 @@ export default function Form (){
             
         }
     
-        setTime(timeCounter);
         setEndDate(countdownTime);
 
 
