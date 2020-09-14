@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-expressions */
 import React,{useState, useEffect} from 'react';
 import {Row, Col} from 'reactstrap';
-import moment from 'moment';
+import PriceCounter from '../services/priceCounter';
+import TimeCounter from '../services/timeCounter';
+import CountdownTime from '../services/countDownTime';
+
 import './form.scss'
 
 import TextArea from '../textArea/textarea';
@@ -13,7 +16,7 @@ export default function Form (){
       const [email, setEmail] = useState("");
       const [name, setName] = useState("");
       const [text, setText] = useState("");
-      const [language, setLanguage] = useState("0");
+      const [language, setLanguage] = useState('0');
       const [comment, setComment] = useState("");
       const [fileLoaded, setFileLoaded] = useState(false);
       const [fileInfo, setFileInfo] = useState({});
@@ -59,116 +62,13 @@ export default function Form (){
       }
 
     useEffect(() => {
-        const priceCounter = (price) => {
-            switch (true) {
-                case (symbolsValue === 0):
-                    price = 0;
-                    break;
-                case (language.includes('0')):
-                    price = 0;
-                    break;
-                case (symbolsValue > 1000 && language.includes('en')):
-                    price = symbolsValue * 0.12;
-                    break;
-                case (symbolsValue > 1000 && !language.includes('en')):
-                        price = symbolsValue * 0.05;
-                        break;
-                case (symbolsValue < 1000 && language.includes('en')):
-                    price = 120;
-                    break;
-                case (symbolsValue < 1000 && !language.includes('en')):
-                    price = 50;
-                    break;
-
-                default:
-                    price = 0;
-                    break;
-            }
-
-            if (fileLoaded && !(fileInfo.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileInfo.type === 'application/msword' || fileInfo.type === 'application/rtf')) {
-                price = price * 1.20;
-            }
-
-            return price.toFixed(2);
-      }
-        setPrice(priceCounter);
+        setPrice(PriceCounter(symbolsValue, language, fileLoaded, fileInfo));
     }, [language, symbolsValue]);
 
     useEffect(() => {
-        const timeCounter = (time) => {
-
-            let timeToDo = 0;
-            switch (true) {
-                case (symbolsValue === 0):
-                    time = '';
-                    break;
-                case (language.includes('0')):
-                    time = '';
-                    break;
-                case (symbolsValue >= 333 && language.includes('en')):
-                    timeToDo = (symbolsValue / 333) + 0.50;
-
-                    time = timeToDo;
-                    break;
-                case (symbolsValue >= 1000 && !language.includes('en')):
-                        timeToDo = (symbolsValue / 1333) + 0.50;
-                        time = timeToDo;
-                        break;
-                case (symbolsValue < 333 && language.includes('en')):
-                    time = 1;
-                    break;
-                case (symbolsValue < 1000 && !language.includes('en')):
-                    time = 1;
-                    break;
-
-                default:
-                    time = 0;
-                    break;
-            }
-
-            if (fileLoaded && !(fileInfo.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileInfo.type === 'application/msword' || fileInfo.type === 'application/rtf')) {
-                time = time * 1.20;
-            }
-            return Math.ceil(time);
-        }
-
-        const countdownTime = () => {
-            moment.locale();      
-
-                let a = moment();
-                let b = moment([10,0,0], "HH:mm:ss");
-                let d = moment([19,0,0], "HH:mm:ss");
-
-                let hours = timeCounter();
-
-                const checkDay = (dayNum, hoursAdd, dayAdd) => {
-                    if (b.isoWeekday() === dayNum) {
-                        a = a.add(hoursAdd,'hours');
-                        b.add(dayAdd, 'days');
-                        d.add(dayAdd, 'days');
-                    }
-                }
-
-                for (let i = 0; i < hours; i++) {
-                    a.add(1,'hours'); 
-                    if (!a.isBetween(b, d)) {
-                        a.add(15,'hours');
-                        b.add(1, 'days');
-                        d.add(1, 'days');
-                        continue;
-                    } 
-
-                    checkDay(6, 48, 2);
-                    checkDay(7, 24, 1);
-                }
-                
-                return a.format('DD.MM.YYYY об HH:mm');
-            
-        }
-    
-        setEndDate(countdownTime);
-
-
+        let startDate = new Date();
+        console.log(startDate);
+        setEndDate(CountdownTime(startDate, TimeCounter(symbolsValue, language, fileLoaded, fileInfo)));
     }, [fileInfo.type, fileLoaded, language, symbolsValue]);
 
 

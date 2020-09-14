@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing textarea value Value 1`] = `"<textarea value={[undefined]} onChange={[undefined]} name=\\"text\\" placeholder=\\"Введіть текст або  \\" />"`;
+
+exports[`Testing textarea value Value 2`] = `"<textarea value=\\"aaaaa\\" onChange={[undefined]} name=\\"text\\" placeholder=\\"Введіть текст або  \\" />"`;
