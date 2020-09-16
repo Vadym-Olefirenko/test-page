@@ -4,6 +4,7 @@ import {Row, Col} from 'reactstrap';
 import PriceCounter from '../services/priceCounter';
 import TimeCounter from '../services/timeCounter';
 import CountdownTime from '../services/countDownTime';
+import moment from 'moment';
 
 import './form.scss'
 
@@ -66,9 +67,11 @@ export default function Form (){
     }, [language, symbolsValue]);
 
     useEffect(() => {
-        let startDate = new Date();
-        console.log(startDate);
-        setEndDate(CountdownTime(startDate, TimeCounter(symbolsValue, language, fileLoaded, fileInfo)));
+        let startDatePre = new Date (); 
+        let startDate = moment(startDatePre, 'DD/MM/YYYY HH:mm dddd').valueOf();
+        let res =  CountdownTime(startDate, TimeCounter(symbolsValue, language, fileLoaded, fileInfo));
+        let finishDate = moment(res).format('DD.MM.YYYY об HH:mm');
+        setEndDate(finishDate);
     }, [fileInfo.type, fileLoaded, language, symbolsValue]);
 
 
