@@ -1,1 +1,1 @@
-Задание на верстку и функционал страницы https://correctarium.com/ua/make-order
+В этом приложении я реализовую функционал страницы https://correctarium.com/ua/make-order
